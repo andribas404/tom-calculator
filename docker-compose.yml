@@ -1,27 +1,14 @@
 version: "3.7"
 
-# logging option
-x-logging:
-  &logging
-  driver: "syslog"
-#  driver: "json-file"
-
 services:
   app:
     image: tom-calculator/app:latest
     build:
       context: .
       dockerfile: ./docker/web/Dockerfile
-    volumes:
-      - .:/app
+    # TODO: move to Dockerfile
     working_dir: /app
-    env_file:
-        - .env
     command: python run
-    logging:
-      << : *logging
-      options:
-        tag: tom-calculator__app
     restart: always
     ports:
       - "18000:80"
@@ -37,10 +24,6 @@ services:
       POSTGRES_DB: tom
     volumes:
       - tom-calculator__postgres:/var/lib/postgresql/data
-    logging:
-        << : *logging
-        options:
-            tag: tom-calculator__postgres
     restart: always
     ports:
         - "18001:5432"
