@@ -1,24 +1,22 @@
 import logging
 from fastapi import FastAPI
-from fastapi.middleware import Middleware
-from starlette.middleware.base import BaseHTTPMiddleware
+
+from tom_calculator.containers import Container
+from tom_calculator import endpoints
 
 logger = logging.getLogger(__name__)
 
 
-class SessionMiddleware(BaseHTTPMiddleware):
-    def __init__(self, app, session):
-        super().__init__(app)
-        self._session = session
+def create_app() -> FastAPI:
+    container = Container()
+    container.config.from_yaml('config.yml')
+    container.wire(modules=[endpoints])
 
-    async def dispatch(self, request, call_next):
-        response = await call_next(request)
-        return response
+    app = FastAPI()
+    app.container = container
+    app.include_router(endpoints.router)
+
+    return app
 
 
-app = FastAPI()
-app.add_middleware(SessionMiddleware, session=None)
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+app = create_app()

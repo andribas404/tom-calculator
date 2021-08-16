@@ -19,13 +19,18 @@ install_requires = [
     'uvloop==0.16.0',
 ]
 
-dev_require = [
+test_require = [
     'flake8==3.9.2',
     'mypy==0.910',
     'pytest-asyncio==0.15.1',
     'pytest-cov==2.12.1',
     'pytest-sugar==0.9.4',
     'pytest==6.2.4',
+]
+
+dev_require = [
+    'pydevd-pycharm~=211.7142.13',
+    'jupyter==1.0.0',
 ]
 
 setup(
@@ -38,5 +43,8 @@ setup(
     packages=find_packages(include=['tom_calculator']),
     python_requires='>=3.9',
     install_requires=install_requires,
-    extras_require={'dev': dev_require},
+    extras_require={
+        'test': test_require,
+        'dev': dev_require,
+    },
 )

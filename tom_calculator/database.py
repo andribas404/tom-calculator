@@ -13,6 +13,14 @@ Base = declarative_base()
 class BaseModel(Base):
     __abstract__ = True
 
+    def __repr__(self) -> str:
+        """Repr function."""
+        attrs = ','.join([
+            f'{key}={getattr(self, key)}'
+            for key in self.__mapper__.c.keys()
+        ])
+        return f'{self.__class__.__module__}.{self.__class__.__qualname__}({attrs})'
+
 
 class Database:
 
