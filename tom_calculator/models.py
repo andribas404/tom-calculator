@@ -22,7 +22,7 @@ class Tax(BaseModel):
         comment='Name of the state.',
     )
     rate = sa.Column(
-        sa.Numeric(16, 4),
+        sa.Numeric(16, 2),
         nullable=False,
         doc='Rate for the current state measured in `%`.',
         comment='Rate for the current state measured in `%`.',
@@ -31,7 +31,7 @@ class Tax(BaseModel):
 
 class Discount(BaseModel):
     __tablename__ = 'discounts'
-    __table_args__ = {'comment': 'Table with discount rates applied to amount in range.'}
+    __table_args__ = {'comment': 'Table with discount rates applied to the amount.'}
 
     id = sa.Column(
         sa.Integer,
@@ -39,29 +39,25 @@ class Discount(BaseModel):
         doc='Dicsount identifier.',
         comment='Dicsount identifier.',
     )
-    range_start = sa.Column(
+    amount = sa.Column(
         MONEY,
         nullable=False,
-        doc='Start of range inclusive, so amount should be in [start, end).',
-        comment='Start of range inclusive, so amount should be in [start, end).',
-    )
-    range_end = sa.Column(
-        MONEY,
-        nullable=False,
-        doc='End of range exclusive, so amount should be in [start, end).',
-        comment='End of range exclusive, so amount should be in [start, end).',
+        index=True,
+        doc='Amount for which this discount is applicable.',
+        comment='Amount for which this discount is applicable.',
     )
     rate = sa.Column(
-        sa.Numeric(16, 4),
+        sa.Numeric(16, 0),
         nullable=False,
-        doc='Discount rate applied to amount in that range measured in `%`.',
-        comment='Discount rate applied to amount in that range measured in `%`.',
+        doc='Discount rate applied to amount measured in `%`.',
+        comment='Discount rate applied to amount measured in `%`.',
     )
 
 
 class Order(BaseModel):
     __tablename__ = 'orders'
     __table_args__ = {'comment': 'Table with orders.'}
+    __mapper_args__ = {'eager_defaults': True}
 
     id = sa.Column(
         UUID,
@@ -74,6 +70,7 @@ class Order(BaseModel):
         sa.DateTime,
         server_default=sa.func.now(),
         nullable=False,
+        index=True,
         doc='Order timestamp.',
         comment='Order timestamp.',
     )
@@ -83,18 +80,21 @@ class Order(BaseModel):
         doc='Amount of order received from calculator.',
         comment='Amount of order received from calculator.',
     )
+    # after_discount = amount - discount
     after_discount = sa.Column(
         MONEY,
         nullable=False,
         doc='Amount of order after discount has been applied.',
         comment='Amount of order after discount has been applied.',
     )
+    # tax = after_discount * rate
     tax = sa.Column(
         MONEY,
         nullable=False,
         doc='Tax sum calculated from discounted amount.',
         comment='Tax sum calculated from discounted amount.',
     )
+    # total = after_discount - tax
     total = sa.Column(
         MONEY,
         nullable=False,

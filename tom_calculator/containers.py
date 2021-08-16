@@ -8,7 +8,7 @@ class Container(containers.DeclarativeContainer):
 
     config = providers.Configuration()
 
-    db = providers.Singleton(Database, db_dsn=config.db.dsn)
+    db = providers.Singleton(Database, db_dsn=config.db.async_dsn)
 
     order_service = providers.Factory(
         OrderService,
