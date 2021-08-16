@@ -1,2 +1,2 @@
 db:
-  dsn: psql://tom:jae2Ahfe@postgres:5432/tomdb
+  dsn: postgresql://tom:jae2Ahfe@postgres:5432/tomdb

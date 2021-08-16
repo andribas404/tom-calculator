@@ -7,6 +7,8 @@ services:
       context: .
       dockerfile: ./docker/web/Dockerfile
     # TODO: move to Dockerfile
+    environment:
+      TOM_CONFIG: "/app/config.yml"
     command: python tom_calculator/main.py
     restart: always
     ports:
