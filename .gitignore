@@ -4,3 +4,6 @@
 
 .env
 .coverage
+docker-compose.override.yml
+/notebooks
+/.run

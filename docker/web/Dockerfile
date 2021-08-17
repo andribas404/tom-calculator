@@ -11,12 +11,13 @@ RUN apt-get update \
         locales \
     # python setup
     && pip install --upgrade pip \
-    && pip install --no-cache-dir -e /app \
+    && pip install --no-cache-dir -e /app/[dev] \
     # clean
     && rm -rf /var/lib/apt/lists/* \
     && apt-get -qq --allow-remove-essential remove gcc \
     && apt-get -qq autoremove \
     && apt-get clean \
+    && echo "ru_RU.UTF-8 UTF-8" > /etc/locale.gen \
     && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
     && locale-gen
 
