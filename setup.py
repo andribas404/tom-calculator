@@ -15,6 +15,7 @@ install_requires = [
     'fastapi==0.68.0',
     'psycopg2==2.9.1',
     'sqlalchemy==1.4.22',
+    'typer==0.3.2',
     'uvicorn[standard]==0.13.4',
     'uvloop==0.16.0',
 ]
@@ -26,6 +27,7 @@ test_require = [
     'pytest-cov==2.12.1',
     'pytest-sugar==0.9.4',
     'pytest==6.2.4',
+    'sqlalchemy[mypy]==1.4.22',
 ]
 
 dev_require = [
@@ -47,4 +49,10 @@ setup(
         'test': test_require,
         'dev': dev_require,
     },
+    entry_points={
+        'console_scripts': [
+            'tom-calculator = tom_calculator.cli:app',
+        ],
+    },
+
 )

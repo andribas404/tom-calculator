@@ -1,9 +1,10 @@
 import sqlalchemy as sa
 from sqlalchemy.dialects.postgresql import MONEY, UUID
-from tom_calculator.database import BaseModel
+
+from tom_calculator.database import Base
 
 
-class Tax(BaseModel):
+class Tax(Base):
     __tablename__ = 'taxes'
     __table_args__ = {'comment': 'Table with tax rates per state.'}
     
@@ -29,7 +30,7 @@ class Tax(BaseModel):
     )
 
 
-class Discount(BaseModel):
+class Discount(Base):
     __tablename__ = 'discounts'
     __table_args__ = {'comment': 'Table with discount rates applied to the amount.'}
 
@@ -54,7 +55,7 @@ class Discount(BaseModel):
     )
 
 
-class Order(BaseModel):
+class Order(Base):
     __tablename__ = 'orders'
     __table_args__ = {'comment': 'Table with orders.'}
     __mapper_args__ = {'eager_defaults': True}

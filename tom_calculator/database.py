@@ -1,6 +1,6 @@
 import logging
 from asyncio import current_task
-from contextlib import asynccontextmanager, AbstractAsyncContextManager
+from contextlib import AbstractAsyncContextManager, asynccontextmanager
 from typing import Callable
 
 from sqlalchemy import orm
@@ -10,13 +10,10 @@ logger = logging.getLogger(__name__)
 
 Base = orm.declarative_base()
 
-
-class BaseModel(Base):
-    __abstract__ = True
-
+TSession = Callable[..., AbstractAsyncContextManager[orm.Session]]
 
 class Database:
-
+    """Database."""
     def __init__(self, db_dsn: str) -> None:
         self._engine = create_async_engine(db_dsn, future=True, echo=True)
         self._async_session_factory = orm.sessionmaker(
@@ -32,12 +29,11 @@ class Database:
             await conn.run_sync(Base.metadata.drop_all)
             await conn.run_sync(Base.metadata.create_all)
 
-    async def close(self):
+    async def close(self) -> None:
         await self._engine.dispose()
 
     @asynccontextmanager
-    async def session(self) -> Callable[..., AbstractAsyncContextManager[orm.Session]]:
-        session: orm.Session
+    async def session(self) -> TSession:
         async with self._session() as session:
             try:
                 yield session
