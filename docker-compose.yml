@@ -18,7 +18,7 @@ services:
     image: tom-calculator/app:latest
     build:
       context: .
-      dockerfile: ./docker/web/Dockerfile
+      dockerfile: ./docker/app/Dockerfile
     environment:
       TOM_CONFIG: "/app/config.yml"
       TOM_DATA: "/app/data"
