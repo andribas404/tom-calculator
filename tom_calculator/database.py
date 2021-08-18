@@ -12,6 +12,7 @@ Base = orm.declarative_base()
 
 TSession = Callable[..., AbstractAsyncContextManager[orm.Session]]
 
+
 class Database:
     """Database."""
     def __init__(self, db_dsn: str) -> None:

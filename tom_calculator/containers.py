@@ -7,6 +7,7 @@ from tom_calculator import services
 
 logger = logging.getLogger(__name__)
 
+
 class Container(containers.DeclarativeContainer):
 
     config = providers.Configuration()
