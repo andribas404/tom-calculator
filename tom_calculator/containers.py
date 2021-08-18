@@ -16,17 +16,17 @@ class Container(containers.DeclarativeContainer):
 
     discount_service = providers.Factory(
         services.DiscountService,
-        session=db.provided.session,
+        db=db,
     )
 
     tax_service = providers.Factory(
         services.TaxService,
-        session=db.provided.session,
+        db=db,
     )
 
     order_service = providers.Factory(
         services.OrderService,
-        session=db.provided.session,
+        db=db,
     )
 
     loader_service = providers.Factory(

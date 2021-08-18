@@ -10,7 +10,8 @@ logger = logging.getLogger(__name__)
 
 def get_config_path():
     """Get configuration file's path from the environment variable."""
-    return Path(os.getenv('TOM_CONFIG'))
+    config = os.getenv('TOM_CONFIG')
+    return Path(config)
 
 
 def load_csv(path: Path) -> Any:

@@ -10,7 +10,7 @@ from dependency_injector.wiring import Provide
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.future import select
 
-from tom_calculator.database import TSession
+from tom_calculator.database import Database
 from tom_calculator.models import Discount, Order, Tax, TBase
 from tom_calculator.schemas import CalculatorIn
 from tom_calculator.util import load_csv, round_down, round_up
@@ -21,8 +21,8 @@ logger = logging.getLogger(__name__)
 class ServiceWithSession:
     model: Optional[TBase] = None
 
-    def __init__(self, session: TSession) -> None:
-        self._session = session
+    def __init__(self, db: Database) -> None:
+        self._db = db
 
     async def is_empty(self) -> bool:
         """Check that table is empty."""
@@ -32,7 +32,7 @@ class ServiceWithSession:
             )
             .select_from(self.model)
         )
-        async with self._session() as session:
+        async with self._db.session() as session:
             res = await session.execute(stmt)
         is_empty = not res.scalar()
         return is_empty
@@ -40,9 +40,8 @@ class ServiceWithSession:
     async def load_data(self, items: Any) -> None:
         """Load data."""
         stmt = self.model.__table__.insert()
-        async with self._session() as session:
+        async with self._db.session() as session:
             await session.execute(stmt, items)
-            await session.commit()
 
 
 class DiscountService(ServiceWithSession):
@@ -57,7 +56,7 @@ class DiscountService(ServiceWithSession):
             )
             .filter(Discount.amount <= amount)
         )
-        async with self._session() as session:
+        async with self._db.session() as session:
             res = await session.execute(stmt)
         discount_rate = res.scalar() or 0
         return discount_rate
@@ -75,7 +74,7 @@ class TaxService(ServiceWithSession):
             )
             .filter(Tax.state_name == state_name)
         )
-        async with self._session() as session:
+        async with self._db.session() as session:
             res = await session.execute(stmt)
         rate = res.scalar()
         if rate is None:
@@ -108,9 +107,8 @@ class OrderService(ServiceWithSession):
             total=total,
         )
 
-        async with self._session() as session:
+        async with self._db.session() as session:
             session.add(order_item)
-            await session.commit()
         order_item_data = jsonable_encoder(order_item)
         return order_item_data
 
@@ -123,7 +121,7 @@ class OrderService(ServiceWithSession):
             )
             .filter(Order.id == item_id_str)
         )
-        async with self._session() as session:
+        async with self._db.session() as session:
             res = await session.execute(stmt)
         item = res.scalar()
         if item is None:

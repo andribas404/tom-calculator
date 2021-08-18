@@ -39,6 +39,7 @@ class Database:
         async with self._session() as session:
             try:
                 yield session
+                await session.commit()
             except Exception:
                 logger.exception('Session rollback because of exception')
                 await session.rollback()
