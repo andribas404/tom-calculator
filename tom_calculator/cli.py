@@ -1,4 +1,5 @@
 import asyncio
+import logging
 import os
 import subprocess
 
@@ -7,6 +8,8 @@ import typer
 
 from tom_calculator import services
 from tom_calculator.application import create_app
+
+logger = logging.getLogger(__name__)
 
 app = typer.Typer()
 
@@ -30,7 +33,7 @@ def main(
 @app.command()
 def migrate():
     typer.echo('Starting migration...')
-    subprocess.run(['alembic', 'migrate', 'head'])
+    subprocess.run(['alembic', 'upgrade', 'head'])
 
 
 @app.command()

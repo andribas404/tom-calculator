@@ -1,0 +1,3 @@
+db:
+  dsn: postgresql+psycopg2://tom:jae2Ahfe@localhost:18002/tomdb
+  async_dsn: postgresql+asyncpg://tom:jae2Ahfe@localhost:18002/tomdb

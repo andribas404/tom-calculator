@@ -1,7 +1,14 @@
+import logging
+from typing import Type
+
 import sqlalchemy as sa
-from sqlalchemy.dialects.postgresql import MONEY, UUID
+from sqlalchemy.dialects.postgresql import UUID
 
 from tom_calculator.database import Base
+
+logger = logging.getLogger(__name__)
+
+TBase = Type[Base]
 
 
 class Tax(Base):
@@ -41,7 +48,7 @@ class Discount(Base):
         comment='Dicsount identifier.',
     )
     amount = sa.Column(
-        MONEY,
+        sa.Numeric(16, 2),
         nullable=False,
         index=True,
         doc='Amount for which this discount is applicable.',
@@ -76,28 +83,28 @@ class Order(Base):
         comment='Order timestamp.',
     )
     amount = sa.Column(
-        MONEY,
+        sa.Numeric(16, 2),
         nullable=False,
         doc='Amount of order received from calculator.',
         comment='Amount of order received from calculator.',
     )
     # after_discount = amount - discount
     after_discount = sa.Column(
-        MONEY,
+        sa.Numeric(16, 2),
         nullable=False,
         doc='Amount of order after discount has been applied.',
         comment='Amount of order after discount has been applied.',
     )
     # tax = after_discount * rate
     tax = sa.Column(
-        MONEY,
+        sa.Numeric(16, 2),
         nullable=False,
         doc='Tax sum calculated from discounted amount.',
         comment='Tax sum calculated from discounted amount.',
     )
     # total = after_discount - tax
     total = sa.Column(
-        MONEY,
+        sa.Numeric(16, 2),
         nullable=False,
         doc='Total amount of order after discount and tax.',
         comment='Total amount of order after discount and tax.',

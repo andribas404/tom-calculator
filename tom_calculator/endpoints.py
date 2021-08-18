@@ -1,10 +1,14 @@
+import logging
 from uuid import UUID
+
 from dependency_injector.wiring import Provide, inject
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from starlette.responses import RedirectResponse
 
-from tom_calculator.containers import Container
 from tom_calculator import schemas, services
+from tom_calculator.containers import Container
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -25,7 +29,13 @@ async def order_create(
     item: schemas.CalculatorIn,
     order_service: services.OrderService = Depends(Provide[Container.order_service]),
 ):
-    return await order_service.create(item.dict())
+    try:
+        return await order_service.create(item)
+    except services.TaxNotFoundError:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f'Tax for state {item.state_name} not exist.'
+        )
 
 
 @router.get(
@@ -37,4 +47,7 @@ async def order_get(
     item_id: UUID,
     order_service: services.OrderService = Depends(Provide[Container.order_service]),
 ):
-    return await order_service.get(item_id)
+    try:
+        return await order_service.get(item_id)
+    except services.OrderNotFoundError:
+        return Response(status_code=status.HTTP_404_NOT_FOUND)

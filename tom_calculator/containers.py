@@ -1,8 +1,11 @@
+import logging
+
 from dependency_injector import containers, providers
 
 from tom_calculator.database import Database
 from tom_calculator import services
 
+logger = logging.getLogger(__name__)
 
 class Container(containers.DeclarativeContainer):
 
