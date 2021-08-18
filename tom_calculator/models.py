@@ -14,7 +14,7 @@ TBase = Type[Base]
 class Tax(Base):
     __tablename__ = 'taxes'
     __table_args__ = {'comment': 'Table with tax rates per state.'}
-    
+
     id = sa.Column(
         sa.Integer,
         primary_key=True,

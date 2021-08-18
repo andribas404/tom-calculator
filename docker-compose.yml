@@ -22,7 +22,6 @@ services:
     environment:
       TOM_CONFIG: "/app/config.yml"
       TOM_DATA: "/app/data"
-    command: python tom_calculator/main.py
     restart: always
     ports:
       - "18001:8000"

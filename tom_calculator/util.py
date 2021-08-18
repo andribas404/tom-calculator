@@ -5,8 +5,6 @@ from decimal import Decimal, ROUND_FLOOR, ROUND_CEILING
 from pathlib import Path
 from typing import Any
 
-import pydevd_pycharm
-
 logger = logging.getLogger(__name__)
 
 
@@ -29,18 +27,3 @@ def round_up(amount):
 
 def round_down(amount):
     return Decimal(amount.quantize(Decimal('.01'), rounding=ROUND_FLOOR))
-
-
-def set_debug():
-    """Set debug from env."""
-    if os.getenv("DEBUG_PYDEVD"):
-        host, port = os.getenv("DEBUG_PYDEVD", "").split(":")
-        port_int: int = int(port)
-
-        pydevd_pycharm.settrace(
-            host=host,
-            stdoutToServer=True,
-            stderrToServer=True,
-            port=port_int,
-            suspend=False,
-        )

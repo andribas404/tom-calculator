@@ -1,6 +1,7 @@
 FROM python:3.9-slim-buster
 
 COPY . /app
+COPY ./docker/web/gunicorn_conf.py /etc
 
 RUN apt-get update \
     && echo "debconf debconf/frontend select Noninteractive" | debconf-set-selections \
@@ -31,3 +32,4 @@ ENV PYTHONUNBUFFERED=1 \
 WORKDIR /app
 
 ENTRYPOINT [ "/entrypoint.sh" ]
+CMD [ "gunicorn", "--config", "file:/etc/gunicorn_conf.py", "tom_calculator.application:app" ]
