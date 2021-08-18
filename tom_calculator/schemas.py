@@ -1,12 +1,30 @@
 import datetime
+import logging
 from decimal import Decimal
-from typing import List
+from numbers import Real
+from typing import List, Sequence
 from uuid import UUID
 
-from fastapi import FastAPI
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
-app = FastAPI()
+from tom_calculator.util import round_down
+
+logger = logging.getLogger(__name__)
+
+
+def validate_money_format(value: Decimal) -> Decimal:
+    assert round_down(value) == value, 'Not the money format.'
+    return value
+
+
+def validate_not_empty(value: Sequence) -> Sequence:
+    assert len(value), 'Empty sequence is not allowed.'
+    return value
+
+
+def validate_non_negative(value: Real) -> Real:
+    assert value >= 0, 'Negative number is not allowed.'
+    return value
 
 
 class TaxItem(BaseModel):
@@ -55,7 +73,15 @@ class CalculatorItemIn(BaseModel):
     quantity: int
     price: Decimal
 
+    # validators
+    _validate_quantity = validator('quantity', allow_reuse=True)(validate_non_negative)
+    _validate_price = validator('price', allow_reuse=True)(validate_money_format)
+
 
 class CalculatorIn(BaseModel):
     """Calculator input."""
     items: List[CalculatorItemIn]
+    state_name: str
+
+    # validators
+    _validate_items = validator('items', allow_reuse=True)(validate_not_empty)

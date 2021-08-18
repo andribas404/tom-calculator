@@ -13,6 +13,7 @@ install_requires = [
     'asyncpg==0.24.0',
     'dependency-injector==4.35.2',
     'fastapi==0.68.0',
+    'gunicorn==20.1.0',
     'psycopg2==2.9.1',
     'sqlalchemy==1.4.22',
     'typer==0.3.2',
@@ -20,7 +21,7 @@ install_requires = [
     'uvloop==0.16.0',
 ]
 
-test_require = [
+test_requires = [
     'flake8==3.9.2',
     'mypy==0.910',
     'pytest-asyncio==0.15.1',
@@ -30,14 +31,14 @@ test_require = [
     'sqlalchemy[mypy]==1.4.22',
 ]
 
-dev_require = [
+dev_requires = [
     'pydevd-pycharm~=211.7142.13',
     'jupyter==1.0.0',
 ]
 
 setup(
     name='tom-calculator',
-    version='0.1.0',
+    version='0.1.1',
     url="https://github.com/andribas404/tom-calculator",
     description="Tom calculator.",
     author="Andrey Petukhov",
@@ -46,13 +47,12 @@ setup(
     python_requires='>=3.9',
     install_requires=install_requires,
     extras_require={
-        'test': test_require,
-        'dev': dev_require,
+        'test': test_requires,
+        'dev': dev_requires,
     },
     entry_points={
         'console_scripts': [
             'tom-calculator = tom_calculator.cli:app',
         ],
     },
-
 )

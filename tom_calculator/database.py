@@ -20,6 +20,7 @@ class Database:
             class_=AsyncSession,
             autocommit=False,
             autoflush=False,
+            expire_on_commit=False,
             bind=self._engine,
         )
         self._session = async_scoped_session(self._async_session_factory, scopefunc=current_task)
