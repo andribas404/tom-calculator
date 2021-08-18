@@ -9,9 +9,9 @@ from typing import Any
 logger = logging.getLogger(__name__)
 
 
-def get_config_path():
+def get_config_path() -> Path:
     """Get configuration file's path from the environment variable."""
-    config = os.getenv('TOM_CONFIG')
+    config = os.getenv('TOM_CONFIG', '')
     return Path(config)
 
 

@@ -39,7 +39,7 @@ def create_app() -> FastAPI:
     """
     container = create_container()
     app = FastAPI()
-    app.container = container
+    app.container = container  # type: ignore[attr-defined]
     app.include_router(endpoints.router)
 
     return app

@@ -40,7 +40,7 @@ app = typer.Typer()
 def load(
     datadir: str,
     loader_service: services.LoaderService = Provide['loader_service'],
-):
+) -> None:
     """Load data from datadir to database.
 
     1. Injects loader_service from container.
@@ -50,9 +50,7 @@ def load(
 
 
 @app.callback()
-def main(
-    ctx: typer.Context,
-):
+def main(ctx: typer.Context) -> None:
     """Main callback.
 
     1. Used to add container to the context.
@@ -63,20 +61,20 @@ def main(
 
 
 @app.command()
-def migrate():
+def migrate() -> None:
     """Command to migrate schema via alembic."""
     typer.echo('Starting migration...')
     subprocess.run(['alembic', 'upgrade', 'head'])
 
 
 @app.command()
-def migrate_data():
+def migrate_data() -> None:
     """Command to migrate data via container's service.
 
     Requires TOM_DATA variable from env.
     """
     typer.echo('Migrating data...')
-    datadir = os.getenv('TOM_DATA')
+    datadir = os.getenv('TOM_DATA', '')
     load(datadir)
 
 

@@ -3,7 +3,7 @@ import datetime
 import logging
 from decimal import Decimal
 from numbers import Real
-from typing import List, Sequence
+from typing import Any, List, Sequence
 from uuid import UUID
 
 from pydantic import BaseModel, validator
@@ -22,7 +22,7 @@ def validate_money_format(value: Decimal) -> Decimal:
     return value
 
 
-def validate_not_empty(value: Sequence) -> Sequence:
+def validate_not_empty(value: Sequence[Any]) -> Sequence[Any]:
     """Validate that sequence is not empty."""
     assert len(value), 'Empty sequence is not allowed.'
     return value
@@ -30,7 +30,7 @@ def validate_not_empty(value: Sequence) -> Sequence:
 
 def validate_not_negative(value: Real) -> Real:
     """Validate that value is not negative."""
-    assert value >= 0, 'Negative number is not allowed.'
+    assert value >= 0, 'Negative number is not allowed.'  # type: ignore[operator]
     return value
 
 

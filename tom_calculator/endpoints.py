@@ -1,6 +1,7 @@
 """API endpoints."""
 import logging
-from uuid import UUID
+from typing import Any
+import uuid
 
 from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends, HTTPException, Response, status
@@ -15,7 +16,7 @@ router = APIRouter()
 
 
 @router.get('/')
-async def root():
+async def root() -> Any:
     """Root endpoint.
 
     Redirects to openapi.
@@ -33,7 +34,7 @@ async def root():
 async def order_create(
     item: schemas.CalculatorIn,
     order_service: services.OrderService = Depends(Provide[Container.order_service]),
-):
+) -> Any:
     """Endpoint for creating orders from calculator input.
 
     Returns created order.
@@ -53,9 +54,9 @@ async def order_create(
 )
 @inject
 async def order_get(
-    item_id: UUID,
+    item_id: uuid.UUID,
     order_service: services.OrderService = Depends(Provide[Container.order_service]),
-):
+) -> Any:
     """Endpoint for retrieving order by id."""
     try:
         return await order_service.get(item_id)

@@ -5,7 +5,11 @@ from contextlib import AbstractAsyncContextManager, asynccontextmanager
 from typing import Callable
 
 from sqlalchemy import orm
-from sqlalchemy.ext.asyncio import AsyncSession, async_scoped_session, create_async_engine
+from sqlalchemy.ext.asyncio import (  # type: ignore[attr-defined]
+    AsyncSession,
+    async_scoped_session,
+    create_async_engine,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -46,8 +50,8 @@ class Database:
         """Close database."""
         await self._engine.dispose()
 
-    @asynccontextmanager
-    async def session(self) -> TSession:
+    @asynccontextmanager  # type: ignore[arg-type]
+    async def session(self) -> TSession:  # type: ignore[misc]
         """Session context manager.
 
         Creates context with scoped session.

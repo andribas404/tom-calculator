@@ -71,14 +71,14 @@ class Order(Base):
     __table_args__ = {'comment': 'Table with orders.'}
     __mapper_args__ = {'eager_defaults': True}
 
-    id = sa.Column(
+    id = sa.Column(  # type: ignore[misc]
         UUID,
         primary_key=True,
         server_default=sa.func.uuid_generate_v4(),
         doc='Order identifier.',
         comment='Order identifier.',
     )
-    ts = sa.Column(
+    ts = sa.Column(  # type: ignore[misc]
         sa.DateTime,
         server_default=sa.func.now(),
         nullable=False,
