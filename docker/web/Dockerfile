@@ -32,4 +32,4 @@ ENV PYTHONUNBUFFERED=1 \
 WORKDIR /app
 
 ENTRYPOINT [ "/entrypoint.sh" ]
-CMD [ "gunicorn", "--config", "file:/etc/gunicorn_conf.py", "tom_calculator.application:app" ]
+CMD [ "gunicorn", "--config", "file:/etc/gunicorn_conf.py", "tom_calculator.main:app" ]
