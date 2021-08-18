@@ -1,7 +1,8 @@
+"""Util."""
 import csv
 import logging
 import os
-from decimal import Decimal, ROUND_FLOOR, ROUND_CEILING
+from decimal import ROUND_CEILING, ROUND_FLOOR, Decimal
 from pathlib import Path
 from typing import Any
 
@@ -22,9 +23,11 @@ def load_csv(path: Path) -> Any:
         return items
 
 
-def round_up(amount):
+def round_up(amount: Decimal) -> Decimal:
+    """Round number to upper with cent precision."""
     return Decimal(amount.quantize(Decimal('.01'), rounding=ROUND_CEILING))
 
 
-def round_down(amount):
+def round_down(amount: Decimal) -> Decimal:
+    """Round number to smaller with cent precision."""
     return Decimal(amount.quantize(Decimal('.01'), rounding=ROUND_FLOOR))

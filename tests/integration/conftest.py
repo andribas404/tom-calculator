@@ -1,3 +1,4 @@
+"""Integration conftest."""
 import asyncio
 from unittest import mock
 
@@ -10,11 +11,13 @@ from tom_calculator.application import create_app, create_container
 
 
 def is_main(config):
+    """Main is true only for the first worker."""
     return getattr(config, 'workerinput', {}).get('workerid', 'gw0') == 'gw0'
 
 
 @pytest.fixture(scope='session')
 def event_loop():
+    """Reassign fixture to the session scope."""
     loop = asyncio.get_event_loop()
     yield loop
     loop.close()
@@ -22,6 +25,7 @@ def event_loop():
 
 @pytest.fixture(scope='session', autouse=True)
 async def db(request):
+    """Populates database with schema."""
     container = create_container()
     db = container.db()
     try:
@@ -34,6 +38,16 @@ async def db(request):
 
 @pytest.fixture(autouse=True)
 async def session_rollback(db):
+    """Session management.
+
+    Эту часть лучше описать на русском языке.
+    Данное приспособление(fixture) требуется для изолированного тестирования.
+    Позволяет запускать тесты параллельно на одной БД.
+    Каждый тест запускается в отдельной сессии, которая создает точку сохранения SAVEPOINT.
+    В конце сессии делается откат данных и таким образом БД остается в неизменном виде.
+    Для этого пародируется(mock) метод класса Database,
+    который является асинхронным контекстным менеджером.
+    """
     async with db._engine.connect() as connection:
         async with connection.begin() as trans:
             session = AsyncSession(bind=connection)
@@ -64,11 +78,13 @@ async def session_rollback(db):
 
 @pytest.fixture
 def app(session_rollback):
+    """Application fixture."""
     app = create_app()
     yield app
 
 
 @pytest.fixture
 def client(app):
+    """Client fixture."""
     client = TestClient(app)
     yield client

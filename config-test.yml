@@ -1,3 +1,7 @@
+# Application config for tests
 db:
+  # Database credentials are located in docker/postgres/.env
+  # dsn for alembic
   dsn: postgresql+psycopg2://tom_test:Zet1uabu@localhost:18002/tomdb_test
+  # dsn for asyncpg via SQLAlchemy
   async_dsn: postgresql+asyncpg://tom_test:Zet1uabu@localhost:18002/tomdb_test

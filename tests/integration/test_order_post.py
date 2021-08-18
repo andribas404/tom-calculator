@@ -1,15 +1,15 @@
+"""Test /order endpoint."""
 import pytest
 
 from tom_calculator.models import Discount, Tax
 
 
-class TestAPIOrder:
+class TestOrderPost:
+    """Test order creation."""
+
     @pytest.fixture(autouse=True)
     async def _setup(self, app):
-        """Setup entities.
-
-        See https://github.com/FactoryBoy/factory_boy/pull/803
-        """
+        """Setup entities."""
         async with app.container.db().session() as session:
             tax = Tax(state_name='state', rate=5)
             discount = Discount(amount=100, rate=3)
@@ -55,6 +55,7 @@ class TestAPIOrder:
         ),
     ])
     def test_valid(self, client, payload, expected):
+        """Test valid order creation."""
         response = client.post('/order', json=payload)
         assert response.status_code == 201
         data = response.json()

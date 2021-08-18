@@ -1,3 +1,4 @@
+"""API endpoints."""
 import logging
 from uuid import UUID
 
@@ -15,6 +16,10 @@ router = APIRouter()
 
 @router.get('/')
 async def root():
+    """Root endpoint.
+
+    Redirects to openapi.
+    """
     response = RedirectResponse(url='/docs#/default/order_create_order_post')
     return response
 
@@ -29,6 +34,10 @@ async def order_create(
     item: schemas.CalculatorIn,
     order_service: services.OrderService = Depends(Provide[Container.order_service]),
 ):
+    """Endpoint for creating orders from calculator input.
+
+    Returns created order.
+    """
     try:
         return await order_service.create(item)
     except services.TaxNotFoundError:
@@ -47,6 +56,7 @@ async def order_get(
     item_id: UUID,
     order_service: services.OrderService = Depends(Provide[Container.order_service]),
 ):
+    """Endpoint for retrieving order by id."""
     try:
         return await order_service.get(item_id)
     except services.OrderNotFoundError:

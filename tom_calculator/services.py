@@ -1,3 +1,4 @@
+"""Services."""
 import asyncio
 import logging
 from decimal import Decimal
@@ -18,10 +19,13 @@ from tom_calculator.util import load_csv, round_down, round_up
 logger = logging.getLogger(__name__)
 
 
-class ServiceWithSession:
+class ServiceWithDB:
+    """Service wired with database instance."""
+    # model of service
     model: Optional[TBase] = None
 
     def __init__(self, db: Database) -> None:
+        """Wire service with db."""
         self._db = db
 
     async def is_empty(self) -> bool:
@@ -38,13 +42,13 @@ class ServiceWithSession:
         return is_empty
 
     async def load_data(self, items: Any) -> None:
-        """Load data."""
+        """Load data from items."""
         stmt = self.model.__table__.insert()
         async with self._db.session() as session:
             await session.execute(stmt, items)
 
 
-class DiscountService(ServiceWithSession):
+class DiscountService(ServiceWithDB):
     """Discount service."""
     model = Discount
 
@@ -62,7 +66,7 @@ class DiscountService(ServiceWithSession):
         return discount_rate
 
 
-class TaxService(ServiceWithSession):
+class TaxService(ServiceWithDB):
     """Tax service."""
     model = Tax
 
@@ -82,7 +86,7 @@ class TaxService(ServiceWithSession):
         return rate
 
 
-class OrderService(ServiceWithSession):
+class OrderService(ServiceWithDB):
     """Order service."""
     model = Order
 
@@ -158,15 +162,19 @@ class LoaderService:
 
 
 class NotFoundError(Exception):
+    """Database lookup error."""
     entity_name: str
 
     def __init__(self, entity_id):
+        """Init."""
         super().__init__(f'{self.entity_name} not found, key: {entity_id}')
 
 
 class TaxNotFoundError(Exception):
+    """Tax lookup error."""
     entity_name: 'Tax'
 
 
 class OrderNotFoundError(Exception):
+    """Order lookup error."""
     entity_name: 'Order'

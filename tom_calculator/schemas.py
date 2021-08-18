@@ -1,3 +1,4 @@
+"""Schemas."""
 import datetime
 import logging
 from decimal import Decimal
@@ -13,16 +14,22 @@ logger = logging.getLogger(__name__)
 
 
 def validate_money_format(value: Decimal) -> Decimal:
+    """Validate that value is in XXX[.CC] format.
+
+    Checks that value contains no more than 2 digits in fraction.
+    """
     assert round_down(value) == value, 'Not the money format.'
     return value
 
 
 def validate_not_empty(value: Sequence) -> Sequence:
+    """Validate that sequence is not empty."""
     assert len(value), 'Empty sequence is not allowed.'
     return value
 
 
-def validate_non_negative(value: Real) -> Real:
+def validate_not_negative(value: Real) -> Real:
+    """Validate that value is not negative."""
     assert value >= 0, 'Negative number is not allowed.'
     return value
 
@@ -74,8 +81,8 @@ class CalculatorItemIn(BaseModel):
     price: Decimal
 
     # validators
-    _validate_quantity = validator('quantity', allow_reuse=True)(validate_non_negative)
-    _validate_price = validator('price', allow_reuse=True)(validate_money_format)
+    _validate_not_negative = validator('quantity', 'price', allow_reuse=True)(validate_not_negative)
+    _validate_money = validator('price', allow_reuse=True)(validate_money_format)
 
 
 class CalculatorIn(BaseModel):
@@ -84,4 +91,4 @@ class CalculatorIn(BaseModel):
     state_name: str
 
     # validators
-    _validate_items = validator('items', allow_reuse=True)(validate_not_empty)
+    _validate_not_empty = validator('items', allow_reuse=True)(validate_not_empty)

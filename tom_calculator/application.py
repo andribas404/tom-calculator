@@ -1,3 +1,7 @@
+"""Application.
+
+Contains 2 fabrics for container and application.
+"""
 import logging
 
 from fastapi import FastAPI
@@ -11,7 +15,13 @@ logger = logging.getLogger(__name__)
 
 
 def create_container() -> Container:
-    """Container factory."""
+    """Container factory.
+
+    1. Gets path to configuration file from the environment
+    2. Initializes container
+    3. Set config from file
+    4. Wires package within container (loose coupling)
+    """
     config_path = get_config_path()
     container = Container()
     container.config.from_yaml(config_path)
@@ -20,7 +30,13 @@ def create_container() -> Container:
 
 
 def create_app() -> FastAPI:
-    """Application factory."""
+    """Application factory.
+
+    1. Creates container
+    2. Initializes FastAPI application
+    3. Puts container in it
+    4. Adds router with endpoints.
+    """
     container = create_container()
     app = FastAPI()
     app.container = container
