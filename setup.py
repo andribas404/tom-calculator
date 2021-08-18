@@ -2,8 +2,8 @@
 """Package setup."""
 
 from setuptools import (
-    setup,
     find_packages,
+    setup,
 )
 
 install_requires = [
@@ -33,13 +33,13 @@ test_requires = [
 ]
 
 dev_requires = [
-    'pydevd-pycharm~=211.7142.13',
     'jupyter==1.0.0',
+    'pydevd-pycharm~=211.7142.13',
 ]
 
 setup(
     name='tom-calculator',
-    version='0.1.1',
+    version='0.1.2',
     url='https://github.com/andribas404/tom-calculator',
     description='Tom calculator.',
     author='Andrey Petukhov',

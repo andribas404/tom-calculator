@@ -1,3 +1,4 @@
+"""Models."""
 import logging
 from typing import Type
 
@@ -12,6 +13,7 @@ TBase = Type[Base]
 
 
 class Tax(Base):
+    """Tax model."""
     __tablename__ = 'taxes'
     __table_args__ = {'comment': 'Table with tax rates per state.'}
 
@@ -38,6 +40,7 @@ class Tax(Base):
 
 
 class Discount(Base):
+    """Discount model."""
     __tablename__ = 'discounts'
     __table_args__ = {'comment': 'Table with discount rates applied to the amount.'}
 
@@ -63,18 +66,19 @@ class Discount(Base):
 
 
 class Order(Base):
+    """Order model."""
     __tablename__ = 'orders'
     __table_args__ = {'comment': 'Table with orders.'}
     __mapper_args__ = {'eager_defaults': True}
 
-    id = sa.Column(
+    id = sa.Column(  # type: ignore[misc]
         UUID,
         primary_key=True,
         server_default=sa.func.uuid_generate_v4(),
         doc='Order identifier.',
         comment='Order identifier.',
     )
-    ts = sa.Column(
+    ts = sa.Column(  # type: ignore[misc]
         sa.DateTime,
         server_default=sa.func.now(),
         nullable=False,

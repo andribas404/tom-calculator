@@ -1,6 +1,7 @@
 version: "3.7"
 
 services:
+  # Nginx service available on port 18000
   nginx:
     depends_on:
       - app
@@ -12,6 +13,9 @@ services:
     ports:
       - "18000:80"
 
+  # App service available on port 18001 and requires TOM_CONFIG, TOM_DATA variables
+  # TOM_CONFIG points to absolute path of configuration file in docker container
+  # TOM_DATA points to absolute path of directory with data in docker container
   app:
     depends_on:
       - postgres
@@ -26,6 +30,9 @@ services:
     ports:
       - "18001:8000"
 
+  # Postgres service available on port 18002 and requires variables from .env file
+  # On first launch databases are initialized with credentials from .env
+  # To recreate data use `docker volume rm tom-calculator__postgres` command
   postgres:
     image: tom-calculator/postgres:latest
     build:
@@ -39,6 +46,8 @@ services:
     ports:
         - "18002:5432"
 
+# On first launch docker volume is created
+# To recreate data use `docker volume rm tom-calculator__postgres` command
 volumes:
     tom-calculator__postgres:
         name: tom-calculator__postgres
