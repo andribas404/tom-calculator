@@ -13,6 +13,12 @@ from tom_calculator.util import round_down
 logger = logging.getLogger(__name__)
 
 
+def validate_int(value: Any) -> int:
+    """Validate that value is int."""
+    assert int(value) == value, 'Not int format.'
+    return value
+
+
 def validate_money_format(value: Decimal) -> Decimal:
     """Validate that value is in XXX[.CC] format.
 
@@ -83,6 +89,7 @@ class CalculatorItemIn(BaseModel):
     # validators
     _validate_not_negative = validator('quantity', 'price', allow_reuse=True)(validate_not_negative)
     _validate_money = validator('price', allow_reuse=True)(validate_money_format)
+    _validate_int = validator('quantity', allow_reuse=True)(validate_int)
 
 
 class CalculatorIn(BaseModel):
