@@ -28,7 +28,7 @@ test_requires = [
     'pytest-asyncio==0.15.1',
     'pytest-cov==2.12.1',
     'pytest-sugar==0.9.4',
-    'pytest-xdist==2.3.0'
+    'pytest-xdist==2.3.0',
     'pytest==6.2.4',
     'sqlalchemy[mypy]==1.4.22',
     'syrupy==1.4.2',
