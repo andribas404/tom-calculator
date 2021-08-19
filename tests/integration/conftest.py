@@ -32,6 +32,8 @@ async def db(request):
     try:
         if is_main(request.config):
             await db.create_database()
+        else:
+            await asyncio.sleep(5)
         yield db
     finally:
         await db.close()

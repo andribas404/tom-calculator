@@ -30,6 +30,7 @@ test_requires = [
     'pytest-sugar==0.9.4',
     'pytest-xdist==2.3.0',
     'pytest==6.2.4',
+    'requests==2.26.0',
     'sqlalchemy[mypy]==1.4.22',
     'syrupy==1.4.2',
 ]
