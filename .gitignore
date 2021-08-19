@@ -2,7 +2,7 @@
 *.py[cod]
 *.egg-info
 
-.env
+/.env
 .coverage
 docker-compose.override.yml
 /notebooks
