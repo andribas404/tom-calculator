@@ -4,6 +4,7 @@ from unittest import mock
 
 import pytest
 from fastapi.testclient import TestClient
+from httpx import AsyncClient
 from sqlalchemy import event
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -40,7 +41,6 @@ async def db(request):
 async def session_rollback(db):
     """Session management.
 
-    Эту часть лучше описать на русском языке.
     Данное приспособление(fixture) требуется для изолированного тестирования.
     Позволяет запускать тесты параллельно на одной БД.
     Каждый тест запускается в отдельной сессии, которая создает точку сохранения SAVEPOINT.
@@ -88,3 +88,10 @@ def client(app):
     """Client fixture."""
     client = TestClient(app)
     yield client
+
+
+@pytest.fixture
+async def async_client(app):
+    """Async client."""
+    async with AsyncClient(app=app, base_url='http://test') as client:
+        yield client

@@ -23,6 +23,7 @@ install_requires = [
 
 test_requires = [
     'flake8==3.9.2',
+    'httpx-0.18.2',
     'mypy==0.910',
     'pytest-asyncio==0.15.1',
     'pytest-cov==2.12.1',
