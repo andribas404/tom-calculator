@@ -30,6 +30,7 @@ test_requires = [
     'pytest-xdist==2.3.0'
     'pytest==6.2.4',
     'sqlalchemy[mypy]==1.4.22',
+    'syrupy==1.4.2',
 ]
 
 dev_requires = [
