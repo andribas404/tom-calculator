@@ -1,0 +1,48 @@
+# name: TestLoadCsv.test_load_csv_discounts
+  <class 'list'> [
+    <class 'dict'> {
+      'amount': '1000',
+      'rate': '3',
+    },
+    <class 'dict'> {
+      'amount': '5000',
+      'rate': '5',
+    },
+    <class 'dict'> {
+      'amount': '7000',
+      'rate': '7',
+    },
+    <class 'dict'> {
+      'amount': '10000',
+      'rate': '10',
+    },
+    <class 'dict'> {
+      'amount': '50000',
+      'rate': '15',
+    },
+  ]
+---
+# name: TestLoadCsv.test_load_csv_taxes
+  <class 'list'> [
+    <class 'dict'> {
+      'rate': '6.85',
+      'state_name': 'UT',
+    },
+    <class 'dict'> {
+      'rate': '8',
+      'state_name': 'NV',
+    },
+    <class 'dict'> {
+      'rate': '6.25',
+      'state_name': 'TX',
+    },
+    <class 'dict'> {
+      'rate': '4',
+      'state_name': 'AL',
+    },
+    <class 'dict'> {
+      'rate': '8.25',
+      'state_name': 'CA',
+    },
+  ]
+---

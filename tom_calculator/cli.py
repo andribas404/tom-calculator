@@ -22,7 +22,6 @@ Commands:
 """
 import asyncio
 import logging
-import os
 import subprocess
 
 import typer
@@ -30,6 +29,7 @@ from dependency_injector.wiring import Provide, inject
 
 from tom_calculator import services
 from tom_calculator.application import create_container
+from tom_calculator.util import get_datadir
 
 logger = logging.getLogger(__name__)
 
@@ -74,9 +74,9 @@ def migrate_data() -> None:
     Requires TOM_DATA variable from env.
     """
     typer.echo('Migrating data...')
-    datadir = os.getenv('TOM_DATA', '')
+    datadir = str(get_datadir())
     load(datadir)
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: no cover
     app()
