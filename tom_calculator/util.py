@@ -15,6 +15,12 @@ def get_config_path() -> Path:
     return Path(config)
 
 
+def get_datadir() -> Path:
+    """Get data directory path from the environment variable."""
+    config = os.getenv('TOM_DATA', '')
+    return Path(config)
+
+
 def load_csv(path: Path) -> Any:
     """Load data from csv file."""
     with open(path, newline='') as csvfile:

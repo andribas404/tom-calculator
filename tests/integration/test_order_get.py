@@ -55,3 +55,9 @@ class TestOrderGet:
             if isinstance(value_db, decimal.Decimal):
                 value = decimal.Decimal(str(value))
             assert value_db == value
+
+    async def test_not_valid(self, app, async_client):
+        """Test not valid order get."""
+        item_id = str(uuid.uuid4())
+        response = await async_client.get(f'/order/{item_id}')
+        assert response.status_code == 404
