@@ -1,0 +1,16 @@
+# name: TestOrderPost.test_price_not_float[payload0-422]
+  <class 'dict'> {
+    'detail': <class 'list'> [
+      <class 'dict'> {
+        'loc': <class 'list'> [
+          'body',
+          'items',
+          0,
+          'price',
+        ],
+        'msg': 'value is not a valid decimal',
+        'type': 'type_error.decimal',
+      },
+    ],
+  }
+---
