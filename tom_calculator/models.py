@@ -106,7 +106,7 @@ class Order(Base):
         doc='Tax sum calculated from discounted amount.',
         comment='Tax sum calculated from discounted amount.',
     )
-    # total = after_discount - tax
+    # total = after_discount + tax
     total = sa.Column(
         sa.Numeric(16, 2),
         nullable=False,
