@@ -108,7 +108,7 @@ class OrderService(ServiceWithDB):
         after_discount = amount - discount
         tax_rate = await self.tax_service.get_tax_rate_by_state(item.state_name)
         tax = round_up(after_discount * tax_rate / 100)
-        total = after_discount - tax
+        total = after_discount + tax
         order_item = Order(
             amount=amount,
             after_discount=after_discount,
